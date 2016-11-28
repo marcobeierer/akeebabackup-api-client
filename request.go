@@ -2,6 +2,7 @@ package akeebabackup
 
 import (
 	"crypto/md5"
+	"crypto/rand"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -10,8 +11,6 @@ import (
 	"net/http"
 	"os"
 	"strings"
-
-	"github.com/ugomo/recruitertool/utils/crypto"
 )
 
 type Request struct {
@@ -126,11 +125,15 @@ func (qr *Request) execute(url string, response *Response, filepath string) bool
 }
 
 func challenge(frontendKey string) string {
-	salt, err := cryptoutils.RandomStringAsHex(8)
-	if err != nil || salt == "" {
+	var salt string
+
+	bytes := make([]byte, 8)
+	if _, err := rand.Read(bytes); err != nil {
 		log.Println("FATAL:", err)
 		salt = "dce49ca2ab195ee2" // TODO better cancel the request instead of using a fallback
 	}
+
+	salt = fmt.Sprintf("%x", bytes)
 
 	data := []byte(salt + frontendKey)
 	return fmt.Sprintf("%s:%x", salt, md5.Sum(data))

@@ -1,10 +1,6 @@
 package akeebabackup
 
-import (
-	"log"
-
-	"github.com/kr/pretty"
-)
+import "log"
 
 type CreateBackupTask struct {
 	websiteURL  string
@@ -28,8 +24,6 @@ func (qt *CreateBackupTask) Execute() bool {
 	if !ok {
 		return false
 	}
-
-	pretty.Println(startBackupResponse)
 
 	startBackupData := startBackupResponse.Data()
 
@@ -64,8 +58,6 @@ func (qt *CreateBackupTask) Execute() bool {
 		}
 
 		filename = stepBackupData.Archive
-
-		pretty.Println(stepBackupResponse)
 	}
 
 	if filename != "" && backupID != 0 {
@@ -81,6 +73,6 @@ func (qt *CreateBackupTask) Execute() bool {
 		log.Println(backupID)
 	}
 
-	pretty.Println("finished")
+	log.Println("finished")
 	return true
 }

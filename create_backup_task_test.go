@@ -10,7 +10,7 @@ func init() {
 }
 
 func TestCreateBackupTask(qt *testing.T) {
-	websiteURL := "https://"
+	websiteURL := "https://" // NOTE change for successful test execution
 	frontendKey := ""
 
 	task := NewCreateBackupTask(websiteURL, frontendKey)
